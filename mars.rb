@@ -10,31 +10,31 @@ end
 
 def steps route, cur_pos
   route.map {|r|
-    cur_pos.course = c_shift_right_1 cur_pos.course if r == 'L'
-    cur_pos.course = c_shift_left_1 cur_pos.course if r == 'R'
-    cur_pos = step cur_pos if r == 'G'
+    cur_pos.course = c_shift_right_1 cur_pos.course if r == 'L' # turn left
+    cur_pos.course = c_shift_left_1 cur_pos.course if r == 'R' # turn right
+    cur_pos = step cur_pos if r == 'G' # one step
   }
   return cur_pos
 end
 
 def step pos
-  pos.x += 1 if pos.course == 1
-  pos.y += 1 if pos.course == 2
-  pos.x -= 1 if (pos.course == 8) && (pos.x > 0)  
-  pos.y -= 1 if (pos.course == 4) && (pos.y > 0)      
+  pos.x += 1 if pos.course == 1 # step right
+  pos.y += 1 if pos.course == 2 # step up
+  pos.x -= 1 if (pos.course == 8) && (pos.x > 0) # step left  
+  pos.y -= 1 if (pos.course == 4) && (pos.y > 0) # step down     
   return pos  
 end
 
 def c_shift_right_1(a)
-  c= a[0]<<4
-  a= a^c
-  a= a>>1  
+  c= a[0]<<4 #  if a = 00001  then c = 10000   else c = 0000 
+  a= a^c # if c =00000 then a=a else a = 10000 
+  a= a>>1  # shift a for 1 bit  1 -> 8
 end
 
 def c_shift_left_1(a)
-  a=a<<1
-  a |= a[4]
-  a &= 15  
+  a=a<<1  # shift a for 1 bit left
+  a |= a[4] # if a= 10000 then a = 10001 else a=a 
+  a &= 15 #  a & 01111  = 0001  8 -> 1 if a = 10001
 end
 
 def start( x , y, com_file)
