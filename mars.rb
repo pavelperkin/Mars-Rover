@@ -8,13 +8,13 @@ def get_commands(com_file)
  IO.read(com_file).split
 end
 
-def steps route, current_pos
+def steps route, cur_pos
     route.map {|r|
-      current_pos.course = c_shift_right_1 current_pos.course if r == 'L'
-      current_pos.course = c_shift_left_1 current_pos.course if r == 'R'
-      current_pos = step current_pos if r == 'G'
+      cur_pos.course = c_shift_right_1 cur_pos.course if r == 'L'
+      cur_pos.course = c_shift_left_1 cur_pos.course if r == 'R'
+      cur_pos = step cur_pos if r == 'G'
     }
-    return current_pos
+    return cur_pos
 end
 
 def step pos
@@ -59,6 +59,7 @@ describe 'start' do
   end
   
    it 'should work correct' do
+      start( 0, 0, 'route.txt').must_equal Position.new({:x => 0, :y => 0, :course => 1 })
       start(1, 1, 'route.txt').must_equal Position.new({:x => 1, :y => 1, :course => 1 })
       start(1, 1, 'route1.txt').must_equal Position.new({:x => 5, :y => 6, :course => 2 })    
       start(4, 4, 'route2.txt').must_equal Position.new({:x => 4, :y => 0, :course => 4 })    
