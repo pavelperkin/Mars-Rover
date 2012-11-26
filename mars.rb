@@ -5,25 +5,25 @@ class Position <OpenStruct
 end
 
 def get_commands(com_file)
- IO.read(com_file).split
+  IO.read(com_file).split
 end
 
 def steps route, cur_pos
-    route.map {|r|
-      cur_pos.course = c_shift_right_1 cur_pos.course if r == 'L'
-      cur_pos.course = c_shift_left_1 cur_pos.course if r == 'R'
-      cur_pos = step cur_pos if r == 'G'
-    }
-    return cur_pos
+  route.map {|r|
+    cur_pos.course = c_shift_right_1 cur_pos.course if r == 'L'
+    cur_pos.course = c_shift_left_1 cur_pos.course if r == 'R'
+    cur_pos = step cur_pos if r == 'G'
+  }
+  return cur_pos
 end
 
 def step pos
-    pos.x += 1 if pos.course == 1
-    pos.y += 1 if pos.course == 2
-    pos.x -= 1 if (pos.course == 8) && (pos.x > 0)  
-    pos.y -= 1 if (pos.course == 4) && (pos.y > 0)      
-    return pos  
-  end
+  pos.x += 1 if pos.course == 1
+  pos.y += 1 if pos.course == 2
+  pos.x -= 1 if (pos.course == 8) && (pos.x > 0)  
+  pos.y -= 1 if (pos.course == 4) && (pos.y > 0)      
+  return pos  
+end
 
 def c_shift_right_1(a)
   c= a[0]<<4
@@ -58,28 +58,28 @@ describe 'start' do
     start( -1, -1, 'route.txt').must_equal 'Position should be positive'
   end
   
-   it 'should work correct' do
-      start( 0, 0, 'route.txt').must_equal Position.new({:x => 0, :y => 0, :course => 1 })
-      start(1, 1, 'route.txt').must_equal Position.new({:x => 1, :y => 1, :course => 1 })
-      start(1, 1, 'route1.txt').must_equal Position.new({:x => 5, :y => 6, :course => 2 })    
-      start(4, 4, 'route2.txt').must_equal Position.new({:x => 4, :y => 0, :course => 4 })    
-      start(4, 4, 'route3.txt').must_equal Position.new({:x => 0, :y => 4, :course => 8 })    
+  it 'should work correct' do
+    start( 0, 0, 'route.txt').must_equal Position.new({:x => 0, :y => 0, :course => 1 })
+    start(1, 1, 'route.txt').must_equal Position.new({:x => 1, :y => 1, :course => 1 })
+    start(1, 1, 'route1.txt').must_equal Position.new({:x => 5, :y => 6, :course => 2 })    
+    start(4, 4, 'route2.txt').must_equal Position.new({:x => 4, :y => 0, :course => 4 })    
+    start(4, 4, 'route3.txt').must_equal Position.new({:x => 0, :y => 4, :course => 8 })    
   end   
 end
 
 describe 'c_shift_left_1' do
   it 'should make cycle shift 4bit-number for one bit left' do
-      c_shift_left_1(0).must_equal(0)
-      c_shift_left_1(1).must_equal(2)
-      c_shift_left_1(8).must_equal(1)
+    c_shift_left_1(0).must_equal(0)
+    c_shift_left_1(1).must_equal(2)
+    c_shift_left_1(8).must_equal(1)
   end
 end
 
 describe 'c_shift_right_1' do
   it 'should make cycle shift 4bit-number for one bit right' do
-      c_shift_right_1(0).must_equal(0)
-      c_shift_right_1(4).must_equal(2)
-      c_shift_right_1(1).must_equal(8)
+    c_shift_right_1(0).must_equal(0)
+    c_shift_right_1(4).must_equal(2)
+    c_shift_right_1(1).must_equal(8)
   end
 end
 
