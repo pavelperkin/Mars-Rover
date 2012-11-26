@@ -8,27 +8,21 @@ def get_commands(com_file)
  IO.read(com_file).split
 end
 
-def steps(route, current_pos)
-    for i in 0...route.length do
-      if route[i]=='L' then
-         current_pos.course = c_shift_right_1(current_pos.course)
-      end
-      if route[i]=='R' then
-         current_pos.course = c_shift_left_1(current_pos.course)
-      end
-      if route[i]=='G' then
-        current_pos = step (current_pos)
-      end      
-    end
+def steps route, current_pos
+    route.map {|r|
+      current_pos.course = c_shift_right_1 current_pos.course if r == 'L'
+      current_pos.course = c_shift_left_1 current_pos.course if r == 'R'
+      current_pos = step current_pos if r == 'G'
+    }
     return current_pos
 end
 
-def step (position)
-    if (position.course == 1) then position.x += 1 end
-    if (position.course == 2) then position.y += 1 end
-    if (position.course == 8) && (position.x > 0) then position.x -= 1 end
-    if (position.course == 4) && (position.y > 0) then position.y -= 1 end    
-    return position  
+def step pos
+    pos.x += 1 if pos.course == 1
+    pos.y += 1 if pos.course == 2
+    pos.x -= 1 if (pos.course == 8) && (pos.x > 0)  
+    pos.y -= 1 if (pos.course == 4) && (pos.y > 0)      
+    return pos  
   end
 
 def c_shift_right_1(a)
